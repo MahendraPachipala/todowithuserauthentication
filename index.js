@@ -13,7 +13,7 @@ app.use(session({
 
 app.use(bodyparser.urlencoded({extend:true}));
 app.use(express.static("Public/Styles"));
-mongoose.connect("mongodb://localhost:27017/todolist").then(()=>console.log("Connected mongodb"));
+mongoose.connect("mongodb+srv://admin-mahendra:Mahendra123@cluster0.l0a5t5v.mongodb.net/todolist").then(()=>console.log("Connected mongodb"));
 
 const Task = mongoose.model("Task",{name:String});
 const task1 = new Task({name:"Welcome to your todolist!"});
