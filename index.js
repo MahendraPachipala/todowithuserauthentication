@@ -1,8 +1,16 @@
 import express from "express";
 import bodyparser from "body-parser";
 import mongoose from "mongoose";
+import session from 'express-session';
 
 const app = express();
+app.set('view engine', 'ejs');
+app.use(session({
+  secret:"Thisissecret",
+  resave:false,
+  saveUninitialized:false
+}));
+
 app.use(bodyparser.urlencoded({extend:true}));
 app.use(express.static("Public/Styles"));
 mongoose.connect("mongodb://localhost:27017/todolist").then(()=>console.log("Connected mongodb"));
@@ -18,23 +26,37 @@ var currentDate = today.toLocaleDateString(undefined, options);
 
 const defaultItems = [task1,task2,task3];
 
-const List = mongoose.model("List",{name:String,items:[{name:String}]});
-const Users = mongoose.model("Users",{username:String,password:String});
-
+const login = mongoose.model("Login",{username:String,password:String});
+const Users = mongoose.model("Users", {
+  username: String,
+  List: {
+    name: String,
+    items: [{ name: String }]
+  }
+});
 
 app.get("/",(req,res)=>{
   res.redirect("/auth/register")
-})
-app.get("/auth/login",(req,res)=>{
-  res.render("login.ejs",{check:true});
 });
+
+app.get("/auth/login",(req,res)=>{
+  if(req.session.user){
+    res.redirect("/Today");
+   }
+   else{
+  res.render("login.ejs",{check:true});
+   }
+});
+
 app.post("/auth/login",(req,res)=>{
    const loguser = req.body.username;
    const userpass = req.body.password;
-   Users.findOne({username:loguser})
+  
+   login.findOne({username:loguser})
    .then((user)=>{
-    if(user.password==userpass){
-       res.redirect("/Today");
+    if(user && user.password==userpass){
+      req.session.user = loguser;
+      res.redirect("/Today");
     }
     else{
       res.render("login.ejs",{check:false});
@@ -44,20 +66,24 @@ app.post("/auth/login",(req,res)=>{
 });
 
 app.get("/auth/register",(req,res)=>{
+  if(req.session.user){
+    res.redirect("/Today");
+   }
+   else{
    res.render("register.ejs",{check:true});
-});
+}});
 
 
 app.post("/auth/register", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  Users.findOne({ username: username })
+  login.findOne({ username: username })
       .then((user) => {
           if (user) {
               res.render("register.ejs", { check: false });
           } else {
-              const newUser = new Users({ username, password });
+              const newUser = new login({ username, password });
               return newUser.save().then(() => {
                   res.redirect("/auth/login");
               });
@@ -70,45 +96,58 @@ app.post("/auth/register", (req, res) => {
 });
 
 
-
 app.get("/:customListName",(req,res)=>{
   const customListName = req.params.customListName;
-  List.findOne({name:customListName})
+  const user = req.session.user;
+  Users.findOne({username:user})
   .then((foundList)=>{
-  if(!foundList){
-    const list = new List({name:customListName,items:defaultItems});
-    list.save();
-  }
-  else{
-   res.render("index.ejs",{listTitle:foundList.name,newListItems:foundList.items,Date:currentDate});
-  }
-})
+    if(!foundList){
+      const list = new Users({username:user,List:{name:customListName,items:defaultItems}});
+      list.save();
+    }
+    else{
+      if (foundList && foundList.List) {
+        res.render("index.ejs", {
+          listTitle: foundList.List.name,
+          newListItems: foundList.List.items,
+          Date: currentDate
+        });
+      }
+    }
+  })
   .catch((err)=>console.log(err));
 });
 
 
-app.post("/delete",(req,res)=>
-{
+
+app.post("/delete",(req,res)=>{
   const checkedItemId = req.body.checkbox;
   const listName = req.body.listName;
-    List.findOneAndUpdate({name:listName},{$pull:{items:{_id:checkedItemId}}})
-    .then(()=>{console.log("Successfully deleted checked item")})
-    .catch((err)=>{console.log(err)})
-    res.redirect("/"+listName);
+  const user = req.session.user;
+  Users.findOneAndUpdate({username: user}, {$pull: {"List.items": {_id: checkedItemId}}})
+    .then(() => {
+      console.log("Successfully deleted checked item");
+      res.redirect("/"+listName);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("Error deleting item");
+    });
 });
+
 
 app.post("/",(req,res)=>{
   const itemName = req.body.newItem;
   const listName = req.body.list;
   const task = new Task({name:itemName});
-  
-    List.findOne({name:listName})
+  const user = req.session.user;
+    Users.findOne({username:user})
     .then((foundList)=>{
       if(task.length===0){
          res.redirect("/"+listName);
       }
       else{
-          foundList.items.push(task);
+          foundList.List.items.push(task);
           foundList.save();
           res.redirect("/"+listName);
       }
