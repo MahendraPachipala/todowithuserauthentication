@@ -1,0 +1,99 @@
+body {
+    text-align: center;
+    background-color: #afc0c6; 
+}
+
+h1 {
+    font-size: 45px;
+}
+
+#btn {
+    background: none;
+    border: none;
+}
+
+#addlogo {
+    height: 70px;
+    width: 70px;
+    border-radius: 100%;
+}
+.strike{
+color:blue;
+}
+#btn:hover {
+    animation: btnadd 1s 1;
+}
+
+
+@keyframes btnadd {
+    100% { transform: rotate(90deg); }
+}
+
+#Taskdiv {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.main {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF; 
+    width: 300px;
+    padding: 0px 20px;
+    border: solid 2px #3498DB; 
+    border-radius: 10px;
+}
+
+#Taskdiv div {
+    text-align: left;
+    background-color: #F1F2F6; 
+    width: auto;
+    height: auto;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: large;
+    font-family: Arial, sans-serif;
+    border: solid 1px #D5DBDB; 
+    margin: 10px;
+}
+
+#inputbar {
+    background-color: #FFFFFF; 
+    width: auto;
+    height: auto;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: large;
+    font-family: Arial, sans-serif;
+    border: solid 2px #3498DB; 
+    margin: 10px;
+}
+
+#labelbar {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333; 
+}
+
+#AddButton {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #3498DB; 
+    border: none;
+    width: 120px;
+    height: 40px;
+    margin: 10px;
+    border-radius: 6px;
+    color: #FFF; 
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#AddButton:hover {
+    background-color: #2980B9; 
+}
+@media (max-width:1000px){
+    
+}

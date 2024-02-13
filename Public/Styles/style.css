@@ -1,0 +1,152 @@
+body {
+    text-align: center;
+    background-image: linear-gradient(45deg,#141d9e 96%, #006e99 4%);
+    background-repeat: no-repeat;
+    min-height: 700px;
+    width: auto;
+    padding: 10px;
+}
+
+h1 {
+    color: #ff6b6b;
+    font-size: 45px;
+}
+
+.Date {
+    background-color: #1fcba9;
+    color: white;
+    padding: 10px 20px;
+    width: 400px;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+.main {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(45deg, #141d9e 90%, #006e99 10%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 400px;
+    padding: 10px 20px;
+    border: solid 2px #f3be00;
+    border-radius: 10px;
+}
+
+#TaskContainer div {
+    text-align: left;
+    background-color: #f1f2f6;
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    font-size: large;
+    font-family: Arial, sans-serif;
+    border: solid 1px #d5dbdb;
+    margin: 10px;
+    padding-left: 20px;
+}
+
+p {
+    margin-left: 10px;
+}
+
+input:checked + p {
+    text-decoration: line-through;
+    text-decoration-color: #ff4242;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    background-image: linear-gradient(45deg, #e8f0e8, #a5ccce);
+}
+
+#taskcreating {
+    margin-top: 20px;
+    padding: 10px;
+    background-image: linear-gradient(45deg, rgba(18, 255, 18, 0), #6fa56a);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+input[type="text"] {
+    text-align: center;
+    height: 30px;
+    top: 10px;
+    border: none;
+    background: #f0f0f0;
+    font-size: 20px;
+    font-weight: 300;
+    width: 100%; 
+}
+
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: inset 0 -3px 0 0 #3498db;
+}
+
+::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+form input[type="text"] {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 5px;
+}
+
+form button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #2980b9;
+}
+
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+a:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+a:active {
+    background-color: #ff00c3;
+    transform: scale(0.95);
+}
+
+
+@media screen and (max-width: 400px) {
+    body {
+        min-height: 800px;
+    }
+    .main, .date, #taskcreating {
+        width: 93%;
+        margin: 8px 0;
+        padding: 10px;
+    }
+    input[type="text"] {
+        width: 93%;
+    }
+}
