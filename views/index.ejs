@@ -7,13 +7,17 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <nav>
+    <div class="logout">
+        <div><a href = "auth/Logout">LogOut</a></div>
+    </div>
+  </nav>
 <div>
   <p class="Date"><%=Date%></p>
 </div>
-  <a href = "https://todolist-k6vf.onrender.com/Home">Home</a>
-  <a href = "https://todolist-k6vf.onrender.com/Work">Work</a>
-  <a href = "https://todolist-k6vf.onrender.com/Today">Today</a>
-  <h2 class="date"><%= listTitle %></h2>
+  <!-- <a href = "https://todolist-k6vf.onrender.com/Today">Tasks</a> -->
+  <!-- <h2 class="date"><%= listTitle %></h2> -->
+  <h2 class="taskhead">Tasks</h2>
   <div class="main">
     <div id="TaskContainer">
       <% newListItems.forEach(function(item){ %>
@@ -27,7 +31,7 @@
       <% }) %>
     </div>
     <form class="item" action="/" method="post">
-      <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+      <input type="text" name="newItem" placeholder="New Task" autocomplete="off">
       <button type="submit" name="list" value="<%= listTitle %>">+</button>
     </form>
   </div>

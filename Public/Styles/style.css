@@ -136,10 +136,29 @@ a:active {
     transform: scale(0.95);
 }
 
+.logout{
+    display:flex;
+    justify-content: flex-end;
+}
+.logout a{
+    background-color: black;
+    font-weight: bold;
+}
+
+.taskhead{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px;
+}
 
 @media screen and (max-width: 400px) {
     body {
         min-height: 800px;
+        width:auto;
     }
     .main, .date, #taskcreating {
         width: 93%;
@@ -150,3 +169,5 @@ a:active {
         width: 93%;
     }
 }
+
+

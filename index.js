@@ -2,6 +2,8 @@ import express from "express";
 import bodyparser from "body-parser";
 import mongoose from "mongoose";
 import session from 'express-session';
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -13,7 +15,7 @@ app.use(session({
 
 app.use(bodyparser.urlencoded({extend:true}));
 app.use(express.static("Public/Styles"));
-mongoose.connect("mongodb+srv://admin-mahendra:Mahendra123@cluster0.l0a5t5v.mongodb.net/todolist").then(()=>console.log("Connected mongodb"));
+mongoose.connect(process.env.mongo).then(()=>console.log("Connected mongodb"));
 
 const Task = mongoose.model("Task",{name:String});
 const task1 = new Task({name:"Welcome to your todolist!"});
@@ -36,7 +38,7 @@ const Users = mongoose.model("Users", {
 });
 
 app.get("/",(req,res)=>{
-  res.redirect("/auth/register")
+  res.redirect("/auth/login")
 });
 
 app.get("/auth/login",(req,res)=>{
@@ -99,7 +101,8 @@ app.post("/auth/register", (req, res) => {
 app.get("/:customListName",(req,res)=>{
   const customListName = req.params.customListName;
   const user = req.session.user;
-  Users.findOne({username:user})
+  if(req.session.user){
+    Users.findOne({username:user})
   .then((foundList)=>{
     if(!foundList){
       const list = new Users({username:user,List:{name:customListName,items:defaultItems}});
@@ -116,6 +119,10 @@ app.get("/:customListName",(req,res)=>{
     }
   })
   .catch((err)=>console.log(err));
+   }
+   else{
+    res.redirect("/auth/login");
+   }
 });
 
 
@@ -153,6 +160,12 @@ app.post("/",(req,res)=>{
       }
     })
     .catch((err)=>{console.log(err)})
+});
+
+app.get("/auth/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/auth/login");
+  });
 });
 
 
